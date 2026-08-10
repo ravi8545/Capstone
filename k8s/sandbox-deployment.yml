@@ -22,7 +22,7 @@ spec:
 
       containers:
         - name: main-sandbox-container
-          image: sandbox:latest
+          image: sandbox:v1
           imagePullPolicy: IfNotPresent
 
           resources:

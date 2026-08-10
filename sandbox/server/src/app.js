@@ -19,16 +19,24 @@ app.get('/api/sandbox/health', (req, res) => {
 });
 
 app.post('/api/sandbox/create', async (req, res) => {
-    const sandboxId = uuid();
-    await Promise.all([
-        createPod(sandboxId),
-        createService(sandboxId)
-    ])
-    return res.status(201).json({
-        message: 'Sandbox created successfully',
-        sandboxId: sandboxId,
-        previewUrl: `http://${sandboxId}.preview.localhost`
-    })
+    try {
+        const sandboxId = uuid();
+        await Promise.all([
+            createPod(sandboxId),
+            createService(sandboxId)
+        ]);
+        return res.status(201).json({
+            message: 'Sandbox created successfully',
+            sandboxId: sandboxId,
+            previewUrl: `http://${sandboxId}.preview.localhost`
+        });
+    } catch (error) {
+        console.error('Error creating sandbox:', error);
+        return res.status(500).json({
+            message: 'Failed to create sandbox',
+            error: error.message || error
+        });
+    }
 });
 
 
